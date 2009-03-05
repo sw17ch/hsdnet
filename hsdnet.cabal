@@ -1,0 +1,63 @@
+Copyright:      John Van Enk, 2009
+Synopsis:       Haskell bindings to libdnet.
+Stability:      Experimental
+
+Name:           hsdnet
+Version:        0.0.0
+
+Description:    FFI bindings to libdnet.
+Cabal-Version:  >= 1.2.0
+Build-Type:     Simple
+
+extra-source-files: src/cbits
+                    src/cbits/dnet
+                    src/cbits/dnet/addr.h
+                    src/cbits/dnet/arp.h
+                    src/cbits/dnet/blob.h
+                    src/cbits/dnet/eth.h
+                    src/cbits/dnet/fw.h
+                    src/cbits/dnet/icmp.h
+                    src/cbits/dnet/intf.h
+                    src/cbits/dnet/ip.h
+                    src/cbits/dnet/ip6.h
+                    src/cbits/dnet/os.h
+                    src/cbits/dnet/rand.h
+                    src/cbits/dnet/route.h
+                    src/cbits/dnet/tcp.h
+                    src/cbits/dnet/tun.h
+                    src/cbits/dnet/udp.h
+                    src/cbits/dnet.h
+                    src/cbits/arp_base.h
+                    src/cbits/addressing_base.h
+                    src/cbits/ethernet_base.h
+
+
+library
+    hs-source-dirs:  src/
+    c-sources:       src/cbits/arp_base.c
+                     src/cbits/ethernet_base.c
+    exposed-modules: Network.DNet
+                     Network.DNet.Addressing
+                     Network.DNet.ARP
+                     Network.DNet.Binary
+                     Network.DNet.Ethernet
+                     Network.DNet.Firewall
+                     Network.DNet.Interfaces
+                     Network.DNet.IP
+                     Network.DNet.Random
+                     Network.DNet.Routing
+                     Network.DNet.Tunnel
+    other-modules:   Network.DNet.Addressing.Base
+                     Network.DNet.ARP.Base
+                     Network.DNet.Binary.Base
+                     Network.DNet.Ethernet.Base
+                     Network.DNet.Firewall.Base
+                     Network.DNet.Interfaces.Base
+                     Network.DNet.IP.Base
+                     Network.DNet.Random.Base
+                     Network.DNet.Routing.Base
+                     Network.DNet.Tunnel.Base
+    ghc-options:     -O2 -Wall
+    include-dirs:    ./src/cbits/
+    build-depends:   base > 3, bytestring >= 0.9.1.4
+    extra-libraries: dnet
