@@ -1,6 +1,17 @@
 {-# LANGUAGE ForeignFunctionInterface, RecordWildCards #-}
 
-module Network.DNet.ARP.Base where
+module Network.DNet.ARP.Base (
+    arpHdrLen,
+    arpEthIpLen,
+    arpHrdEth,
+    arpHrdIEEE802,
+    arpProIp,
+    ArpEntry(..),
+    ArpHandle,
+    arpOpen,
+) where
+
+import Control.Monad
 
 import Data.Word
 import Foreign.Storable
@@ -114,6 +125,11 @@ instance Storable ArpEthIP where
         return $ ArpEthIP { sha = SndHrdAddr sha', spa = SndPrtAddr spa',
                             tha = TrgHrdAddr tha', tpa = TrgPrtAddr tpa' }
 
+data ArpEntry = ArpEntry {
+    pa :: Address,
+    ha :: Address
+} deriving (Show)
+
 -- void arp_pack_hdr_ethip_wrapper(struct arp_hdr * hdr,
 --                                 uint16_t op,
 --                                 uint8_t * sha,
@@ -129,7 +145,12 @@ foreign import ccall "base.h arp_pack_hdr_ethip_wrapper"
                     -> CString      -- | Target protocol address
                     -> IO ()
 
-data ArpEntry = ArpEntry {
-    pa :: Address,
-    ha :: Address
-} deriving (Show)
+newtype ArpHandle = ArpHandle (Ptr ArpHandle)
+
+-- TODO: Need arp_handler callback
+
+foreign import ccall "dnet.h arp_open"
+    arpOpen_FFI :: IO (Ptr ArpHandle)
+
+arpOpen :: IO ArpHandle
+arpOpen = liftM ArpHandle arpOpen_FFI
